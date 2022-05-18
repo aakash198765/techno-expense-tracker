@@ -1,0 +1,26 @@
+ [
+    {
+        "title": "Breakfast",
+        "notes": "Masala Dosa",
+        "amount": 65.00,
+        "date": 88979908
+    },
+    {
+        "title": "Lunch",
+        "notes": "Biryani",
+        "amount": 120.00,
+        "date": 88979998
+    },
+    {
+        "title": "Snacks",
+        "notes": "Tea & Toast",
+        "amount": 45.00,
+        "date": 88971908
+    },
+    {
+        "title": "Dinner",
+        "notes": "Dum Biryani",
+        "amount": 235.00,
+        "date": 80971908
+    }
+]

@@ -1,0 +1,58 @@
+{
+    "profile" : {
+    "emailID": {
+        "title": "Email ID",
+        "type": "string",
+        "format": "emailID",
+        "index": 100
+    },
+    "password": {
+        "title": "Password",
+        "type": "string",
+        "format": "password",
+        "index": 200
+    },
+    "joinedOn": {
+        "title": "Joined",
+        "type": "string",
+        "format": "date",
+        "index": 30
+    },
+    "name": {
+        "title": "Name",
+        "type": "string",
+        "format": "",
+        "index": 40
+    },
+    "phoneNumber": {
+        "title": "Phone Number",
+        "type": "string",
+        "format": "phoneNumber",
+        "index": 500
+    },
+    "street": {
+        "title": "Street Address",
+        "type": "string",
+        "format": "",
+        "index": 600
+    },
+    "city": {
+        "title": "City",
+        "type": "string",
+        "format": "",
+        "index": 700
+    },
+    "state": {
+        "title": "State",
+        "type": "string",
+        "format": "",
+        "index": 800
+    },
+    "country": {
+        "title": "Country",
+        "type": "string",
+        "format": "",
+        "index": 900
+    }
+}
+}
