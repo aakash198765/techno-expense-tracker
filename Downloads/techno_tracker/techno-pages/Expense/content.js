@@ -5,27 +5,33 @@ import { Paragraph, Avatar, Menu, Caption, Divider, Title, Appbar, Button, Touch
 import TechnoCustomCard from "../../techno-ui-components/Card";
 import TechnoPieChart from "../../techno-ui-components/Chart/pie-chart"
 import TechnoBottomSheet from "../../techno-ui-components/BottomSheet";
+import TechnoDatePicker from "../../techno-ui-components/DatePicker";
+
+import ExpenseList from "./expenses-list";
+import schema from './schema.json';
+import tableData from './expense.json';
+import Utils from "../../Utils";
+
+import Detail from "../DetailPage/index";
+
 
 const Content  = (props) => {
     const { data } = props;
-    const [showFilter, setShowFilter ] = useState(false);
+    
 
-    const filterIcon = () => {
-        return  (
-            <View style={{flexDirection: 'column', width: 170, height: 150,  alignItems: 'center', justifyContent: 'center', backgroundColor: '#83a7ea', color: '#fff', zIndex: 999, borderRadius: 10,    }}>
-                <Menu.Item icon="" onPress={() => {}} title="Weekly" titleStyle={{color: '#fff', fontFamily: 'montserrat', alignSelf: 'center'}} />
-                <Menu.Item icon="" onPress={() => {}} title="Monthly" titleStyle={{color: '#fff', fontFamily: 'montserrat', alignSelf: 'center'}} />
-                <Menu.Item icon="" onPress={() => {}} title="All Time" titleStyle={{color: '#fff', fontFamily: 'montserrat', alignSelf: 'center'}}/>
-            </View>
-        )
+    const fetchExpenseForSelectedDate = (date) => {
+        if(!date){
+            return ''
+        }
+        console.log(new Date(date).getTime())
+        // API CALL TO FETCH THE EXPENSE FOR THE SELECTED DATE AND UPDATE THE UI
     }
 
     return (
         <View style={{flexDirection: 'column', height: '100%', paddingTop: '2%', paddingHorizontal: '2%'}}>
             {/* Filter */}
-            <View style={{flexDirection: 'row', justifyContent: 'flex-end', height: '10%', backgroundColor: '', margin: 0, paddingHorizontal: 10 }} >
-                    {showFilter ? filterIcon() : <></> }
-                   <Button icon="filter-outline" color="#83a7ea" mode="text" compact={true} onPress={() => setShowFilter(!showFilter)} style={{justifyContent: 'center', alignItems: 'center', borderRadius: 20}} />
+            <View style={{flexDirection: 'row', justifyContent: 'flex-end', height: '10%', backgroundColor: '', margin: 0, paddingHorizontal: 5 }} >
+                   <TechnoDatePicker style={{justifyContent: 'center', alignItems: 'center', borderRadius: 20}} onSelectingDate={(date) =>fetchExpenseForSelectedDate(date)}  />
             </View>
 
              {/* pie chart */}
@@ -44,24 +50,31 @@ const Content  = (props) => {
              <View style={{flexDirection: 'column', height: '20%', paddingHorizontal: 10, backgroundColor: ''}} >
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <Text style={{fontSize: 16, fontWeight: 'bold', fontFamily: 'Montserrat', color: '#111111'}}>Expenses</Text>
-                    <TechnoBottomSheet primaryText="All Expenses" primaryTextStyle={{ padding: 0, margin: 0, textDecorationLine: 'underline' }} />
+                    <TechnoBottomSheet primaryText="All Expenses" primaryTextStyle={{ padding: 0, margin: 0, textDecorationLine: 'underline' }} renderContent={<ExpenseList schema={schema} data={tableData}  />} />
                 </View>
 
                 <View style={{flex: 1, flexDirection: 'row', width: '100%', height: '100%', marginTop: 10  }}>
                     <ScrollView horizontal={true} style={{ width: '100%', paddingBottom: 20 }}>
-                        {
-                        data.map(element => {
-                        return  (
-                                    <TechnoCustomCard 
-                                        cardStyle={{ width: 120, height: '100%', backgroundColor: '#83a7ea', borderRadius: 20, marginHorizontal: 5}} 
-                                        cardTitleStyle={{}} cardTitle={''} cardSubtitle={''}  
-                                        contentStyle={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignSelf: 'center'}} 
-                                        contentTitleStyle={{alignSelf: 'center', color: '#fff'}} contentTitle={element.amount} 
-                                        contentBodyStyle={{color: '#fff'}} contentBody={element.title} 
+                    {
+                    data.map(expense => {
+                        return Object.keys(expense).map(propertiesGroup => {
+                                return  (
+                                    <Detail
+                                        expense={expense}
+                                        renderTouchableComponent = {
+                                            <TechnoCustomCard 
+                                                cardStyle={{ width: 120, height: '100%', backgroundColor: '#83a7ea', borderRadius: 20, marginHorizontal: 5}} 
+                                                cardTitleStyle={{}} cardTitle={''} cardSubtitle={''}  
+                                                contentStyle={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignSelf: 'center'}} 
+                                                contentTitleStyle={{alignSelf: 'center', color: '#fff'}} contentTitle={Utils.getCurrency(expense[propertiesGroup].amount)} 
+                                                contentBodyStyle={{color: '#fff'}} contentBody={expense[propertiesGroup].title} 
+                                        />
+                                        }
                                     />
-                        )
+                            )
                         })
-                    }
+                    })
+                }
                     </ScrollView>
                 </View>
             </View>

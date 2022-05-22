@@ -1,0 +1,29 @@
+{
+    "Expense": {
+        "properties": {
+            "title": {
+                "title": "Title",
+                "type": "String",
+                "index": 100
+            },
+            "notes": {
+                "title": "Note",
+                "type": "String",
+                "index": 200
+            },
+            "amount": {
+                "title": "Amount",
+                "type": "Number",
+                "index": 300,
+                "format": "Number"
+            },
+            "date": {
+                "title": "Date",
+                "type": "String",
+                "index": 400,
+                "format": "Date"
+            }
+        },
+        "order": ["date", "title", "amount", "notes"]
+    }
+}

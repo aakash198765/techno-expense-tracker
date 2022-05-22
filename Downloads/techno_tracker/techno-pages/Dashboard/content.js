@@ -5,6 +5,11 @@ import { IconButton, Headline } from 'react-native-paper';
 import TechnoCustomCard from "../../techno-ui-components/Card";
 import TechnoLineChart from "../../techno-ui-components/Chart/line-chart";
 import TechnoBottomSheet from "../../techno-ui-components/BottomSheet";
+import Detail from "../DetailPage/index";
+
+import AddTask from "./add-expense";
+import Schema from './schema.json';
+import Utils from "../../Utils";
 
 const DeviceInfo = () => {
     let info = {
@@ -49,20 +54,32 @@ const Welcome = (props) => {
 const TotalExpense = (props) => {
     const { device , data } = props;
     let totalexpense = 0;
-    let paragraph = 'Expenses for today';
+    let quote = 'Expenses for the day'
+    let date = `${Utils.getDate(new Date().getTime())}`;
+    
     if(data){
-        data.map(element => {
-                totalexpense = totalexpense + element.amount;
-        })
+        for(let expenseIndex in data){
+            let expense = data[expenseIndex];
+            if(expense){
+                for(let propertiesGroup in expense){
+                    let properties = expense[propertiesGroup];
+                    if(properties && properties.amount){
+                        totalexpense = totalexpense + properties.amount;
+                    }
+                }
+            }
+        }
     }
+
     return (
         <View style={styles.totalexpense.container[device.size]}>
             <TechnoCustomCard 
                 cardStyle={{width: '100%', height: '90%', backgroundColor: '#83a7ea', borderRadius: 20}} 
                 cardTitleStyle={{}} cardTitle={''} cardSubtitle={''}  
                 contentStyle={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignSelf: 'center'}} 
-                contentTitleStyle={{alignSelf: 'center', color: '#fff'}} contentTitle={totalexpense} 
-                contentBodyStyle={{color: '#fff'}} contentBody={paragraph} 
+                contentTitleStyle={{alignSelf: 'center', color: '#fff'}} contentTitle={Utils.getCurrency(totalexpense)}
+                contentSubtitle={''} 
+                contentBodyStyle={{color: '#fff'}} contentBody={quote} 
             />
         </View>
     )
@@ -75,22 +92,29 @@ const DailyExpense = (props) => {
         <View style={styles.dailyexpense.container[device.size]}>
             <View style={styles.dailyexpense.container[device.size].header.style}>
                 <Text style={styles.dailyexpense.container[device.size].header.text}>Daily Expenses</Text>
-                <TechnoBottomSheet primaryIcon="plus" primaryIconStyle={styles.dailyexpense.container[device.size].header.icon} />
+                <TechnoBottomSheet primaryIcon="plus" primaryIconStyle={styles.dailyexpense.container[device.size].header.icon} renderContent={<AddTask schema={Schema} />} />
             </View>
 
             <View style={{flex: 1, flexDirection: 'row', width: '100%', height: '100%',  }}>
                 <ScrollView horizontal={true} style={{width: '100%', paddingBottom: 20 }}>
                     {
-                    data.map(element => {
-                       return  (
-                                <TechnoCustomCard 
-                                    cardStyle={{ width: 120, height: '100%', backgroundColor: '#83a7ea', borderRadius: 20, marginHorizontal: 5}} 
-                                    cardTitleStyle={{}} cardTitle={''} cardSubtitle={''}  
-                                    contentStyle={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignSelf: 'center'}} 
-                                    contentTitleStyle={{alignSelf: 'center', color: '#fff'}} contentTitle={element.amount} 
-                                    contentBodyStyle={{color: '#fff'}} contentBody={element.title} 
-                                />
-                       )
+                    data.map(expense => {
+                        return Object.keys(expense).map(propertiesGroup => {
+                                return  (
+                                        <Detail 
+                                           expense={expense}
+                                           renderTouchableComponent={
+                                                <TechnoCustomCard 
+                                                cardStyle={{ width: 120, height: '100%', backgroundColor: '#83a7ea', borderRadius: 20, marginHorizontal: 5}} 
+                                                cardTitleStyle={{}} cardTitle={''} cardSubtitle={''}  
+                                                contentStyle={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignSelf: 'center'}} 
+                                                contentTitleStyle={{alignSelf: 'center', color: '#fff'}} contentTitle={Utils.getCurrency(expense[propertiesGroup].amount)} 
+                                                contentBodyStyle={{color: '#fff'}} contentBody={expense[propertiesGroup].title} 
+                                                />
+                                            } 
+                                        />
+                                )
+                        })
                     })
                 }
                 </ScrollView>
@@ -105,9 +129,11 @@ const DailyActivity = (props) => {
     let labels = [];
     let datasets = [];
     if(data){
-        data.map(element => {
-            labels.push(element.title);
-            datasets.push(element.amount);
+        data.map(expense => {
+            Object.keys(expense).map(propertiesGroup => {
+                labels.push(expense[propertiesGroup].title)
+                datasets.push(expense[propertiesGroup].amount)
+            })
         })
     }
     return (
@@ -126,7 +152,7 @@ const Content = (props) => {
             <Welcome device={device} data={data}  />
             <TotalExpense device={device} data={data}  />
             <DailyExpense device={device} data={data} />
-            <DailyActivity device={device} data={data} />
+            <DailyActivity device={device} data={data} /> 
         </>
     )
 }

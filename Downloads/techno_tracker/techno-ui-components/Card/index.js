@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native-paper'
+import {View,} from 'react-native-paper'
 
 import {Card, Title, Paragraph} from 'react-native-paper';
 
@@ -14,6 +14,7 @@ const TechnoCustomCard  = (props) => {
             }
             <Card.Content style={props.contentStyle}>
                 <Title style={props.contentTitleStyle}>{props.contentTitle}</Title>
+                {props.contentSubtitle ? <Title style={props.contentBodyStyle}>{props.contentSubtitle}</Title> : <></>}
                 <Paragraph style={props.contentBodyStyle}>{props.contentBody}</Paragraph>
             </Card.Content>
         </Card>

@@ -21,7 +21,7 @@ const TechnoBottomSheet = (props) => {
               backgroundColor: "gray",
             },
             draggableIcon: {
-              backgroundColor: "#ffa726"
+              backgroundColor: "#83a7ea"
             },
             container: {
               backgroundColor: '#f7f7f7',
@@ -33,7 +33,7 @@ const TechnoBottomSheet = (props) => {
         >
           {/* <YourOwnComponent /> */}
           <View>
-            <Text>Bottom Sheet Content</Text>
+            {props.renderContent?props.renderContent: <></>}
           </View>
         </RBSheet>
     </View>

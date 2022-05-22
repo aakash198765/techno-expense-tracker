@@ -17,8 +17,8 @@ const TechnoLineChart = (props) => {
           }}
           width={Dimensions.get("window").width}
           height={style.height}
-          yAxisLabel="$"
-          yAxisSuffix="k"
+          yAxisLabel="₹"
+          yAxisSuffix=""
           yAxisInterval={1} // optional, defaults to 1
           chartConfig={{
             backgroundColor: "#83a7ea",
